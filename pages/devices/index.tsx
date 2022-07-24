@@ -2,6 +2,11 @@ import {ColumnDef, getCoreRowModel, getSortedRowModel, Table} from "@tanstack/ta
 import {flexRender, useReactTable} from "@tanstack/react-table";
 import React from "react";
 
+import FullHeightPage from "../../componets/FullHeightPage";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+
+
 type Device = {
     id:string,
     model: string,
@@ -51,10 +56,10 @@ const deviceColumn: ColumnDef<Device>[] = [
 ]
 
 
-interface DeviceTableProps {
+interface DeviceTableElementProps {
     table: Table<Device>
 }
-function DeviceTableHeader({table}: DeviceTableProps) {
+function DeviceTableHeader({table}: DeviceTableElementProps) {
 
     return (
         <thead>
@@ -66,16 +71,16 @@ function DeviceTableHeader({table}: DeviceTableProps) {
                             key={header.id}
                             colSpan={header.colSpan}
                             style={{width: header.getSize()}}
+                            className="text-left bg-blue-600 text-white h-8"
                         >
                             {header.isPlaceholder ? null : (
-                                <div>
+                                <div className="p-3">
                                     {flexRender(
                                         header.column.columnDef.header,
                                         header.getContext()
                                     )}
                                 </div>
                             )
-
                             }
                         </th>
                     );
@@ -83,17 +88,18 @@ function DeviceTableHeader({table}: DeviceTableProps) {
             </tr>
         ))}
         </thead>
+
     );
 }
 
-function DeviceTableBody({table}: DeviceTableProps) {
+function DeviceTableBody({table}: DeviceTableElementProps) {
     const rows = table.getRowModel().rows;
     return(
         <tbody>
         {rows.map(row => (
-            <tr key={row.id}>
+            <tr key={row.id} className="hover:bg-gray-100 hover:font-medium transition-all h-8 border-b">
                 {row.getVisibleCells().map(cell => (
-                    <td key={cell.id}>
+                    <td key={cell.id} className="p-3">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                 ))}
@@ -104,9 +110,12 @@ function DeviceTableBody({table}: DeviceTableProps) {
 
 }
 
-function DevicePage() {
+interface DeviceTableProps {
+    readonly devices: Array<Device>
+}
+function DeviceTable({devices}: DeviceTableProps) {
 
-    const [data] = React.useState(() => dummyData);
+    const [data] = React.useState(() => devices);
 
     const columns = React.useMemo<ColumnDef<Device>[]>(()=> deviceColumn,[]);
     const table = useReactTable<Device>({
@@ -116,16 +125,45 @@ function DevicePage() {
         debugTable: true
     });
 
-    return (
-        <div className="p-2">
-            <div className="h-2" />
-            <div>
-                <table>
-                    <DeviceTableHeader table={table}/>
-                    <DeviceTableBody table={table}/>
-                </table>
-            </div>
+    return(
+        <table className="w-full rounded">
+            <DeviceTableHeader table={table}/>
+            <DeviceTableBody table={table}/>
+        </table>
+    )
+}
+
+function SearchInput() {
+    const [focused, setFocused] = React.useState(false);
+    const onFocus = () => setFocused(true)
+    const onBlur = () => setFocused(false)
+    const focusBorder = focused ? "border-blue-600":"";
+    return(
+        <div className={`flex flex-row justify-center items-center w-full h-10 border bg-white rounded border-gray-400 ${focusBorder}`}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="pl-4" color="#9ca3af"/>
+            <input type={"text"}
+                   onFocus={onFocus}
+                   onBlur={onBlur}
+                   className="h-8 bg-white p-3 w-full rounded focus:outline-0 placeholder:italic group-focus:bg-blue-600"
+                   placeholder="Search for ..."/>
         </div>
+    )
+}
+
+function DevicePage() {
+
+    return (
+        <FullHeightPage className="bg-gray-100">
+            <div className="flex flex-col pt-16 pl-8 pr-8">
+                <h1 className="justify-start font-bold text-2xl">Mobile Devices</h1>
+                <div className="h-8"/>
+                <SearchInput />
+                <div className="h-4"/>
+                <div className="bg-white rounded border flex justify-center w-full h-full">
+                    <DeviceTable devices={dummyData} />
+                </div>
+            </div>
+        </FullHeightPage>
     )
 }
 
