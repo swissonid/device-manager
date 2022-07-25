@@ -1,9 +1,8 @@
-import { PrimaryButton } from "../../components/Button/Buttons";
-
+import { PrimaryButton } from '../../components/Button/Buttons';
 
 export default {
-    title: "Components/PrimaryButton",
-    component: PrimaryButton,
+  title: 'Components/PrimaryButton',
+  component: PrimaryButton,
 };
 
-export const PrimaryButtonPage = () => <PrimaryButton child="PrimaryButton" />
+export const PrimaryButtonPage = () => <PrimaryButton child="PrimaryButton" />;
