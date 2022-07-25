@@ -17,7 +17,7 @@ function RawButton({child, href, size, className}: RawButtonProp) {
     const classConfig = `${className} 
     uppercase font-medium text-xs 
     rounded-full 
-    flex justify-center items-center 
+    inline-flex justify-center items-center 
     cursor-pointer 
     max-w-fit min-w-[40px] px-6 py-2.5
     transition-colors
