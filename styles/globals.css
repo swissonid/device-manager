@@ -29,5 +29,49 @@ a {
 @tailwind components;
 @tailwind utilities;
 
+.overlay {
+    @apply fixed inset-0 w-full h-screen bg-gray-900 bg-opacity-90;
+}
 
+
+.overlay {
+    -webkit-animation: fadeIn .3s linear ;
+    -moz-animation: fadeIn .3s linear ;
+    animation: fadeIn .3s linear ;
+}
+
+@-webkit-keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+
+
+/* Turn on custom 8px wide scrollbar */
+::-webkit-scrollbar {
+    width: 8px; /* 1px wider than Lion. */
+    /* This is more usable for users trying to click it. */
+    /*-webkit-border-radius: 100px;*/
+}
+/* hover effect for both scrollbar area, and scrollbar 'thumb' */
+::-webkit-scrollbar:hover {
+    @apply bg-white bg-opacity-90;
+}
+
+*::-webkit-scrollbar-track {
+    @apply bg-indigo-100;
+}
+
+*::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-indigo-600 via-indigo-600 to-indigo-900;
+}
 
